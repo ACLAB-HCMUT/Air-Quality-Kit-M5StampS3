@@ -17,7 +17,7 @@ void setup()
 #endif
 
   // FreeRTOS tasks
-  if (check_info())
+  if (check_info(0))
   {
     device_intit();
     task_intit();
@@ -26,14 +26,17 @@ void setup()
 
 void loop()
 {
-  if (!Wifi_reconnect())
+  if (check_info(1))
   {
-    stopServer();
-    return;
-  }
-  MQTT_reconnect();
-  if (!isServerRunning)
-  {
-    connnectWSV();
+    if (!Wifi_reconnect())
+    {
+      stopServer();
+      return;
+    }
+    MQTT_reconnect();
+    if (!isServerRunning)
+    {
+      connnectWSV();
+    }
   }
 }

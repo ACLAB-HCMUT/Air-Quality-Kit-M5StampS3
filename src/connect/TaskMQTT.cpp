@@ -87,7 +87,7 @@ void MQTT_reconnect()
     {
         if (!tb.connect(MQTT_SERVER, TOKEN.c_str(), MQTT_PORT))
         {
-            Serial.println("Failed to connect");
+            // Serial.println("Failed to connect");
             return;
         }
 
@@ -96,13 +96,13 @@ void MQTT_reconnect()
         Serial.println("Subscribing for RPC...");
         if (!tb.RPC_Subscribe(callbacks.cbegin(), callbacks.cend()))
         {
-            Serial.println("Failed to subscribe for RPC");
+            // Serial.println("Failed to subscribe for RPC");
             return;
         }
 
         if (!tb.Shared_Attributes_Subscribe(attributes_callback))
         {
-            Serial.println("Failed to subscribe for shared attribute updates");
+            // Serial.println("Failed to subscribe for shared attribute updates");
             return;
         }
 
@@ -110,7 +110,7 @@ void MQTT_reconnect()
 
         if (!tb.Shared_Attributes_Request(attribute_shared_request_callback))
         {
-            Serial.println("Failed to request for shared attributes");
+            // Serial.println("Failed to request for shared attributes");
             return;
         }
         tb.sendAttributeData("localIp", WiFi.localIP().toString().c_str());

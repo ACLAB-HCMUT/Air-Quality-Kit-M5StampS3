@@ -11,6 +11,7 @@
 #define delay_time 10000
 #define delay_gps 15000
 #define delay_connect 100
+#define delay_led 1000
 #define delay_30_min 1800000
 
 // DEFINE BATTERY
@@ -25,6 +26,14 @@
 
 #ifndef MY_SDA
 #define MY_SDA 12
+#endif
+
+#ifndef TXD_RS485
+#define TXD_RS485 9
+#endif
+
+#ifndef RXD_RS485
+#define RXD_RS485 8
 #endif
 
 // #define SCL_CUSTOM 13

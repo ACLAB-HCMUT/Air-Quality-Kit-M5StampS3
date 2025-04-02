@@ -11,10 +11,10 @@ void parseJson(String message, bool server)
 
     if (!server)
     {
-        if (doc["email"].as<String>() != EMAIL)
-        {
-            return;
-        }
+        // if (doc["email"].as<String>() != EMAIL)
+        // {
+        //     return;
+        // }
     }
 
     String mode = doc["mode"].as<String>();

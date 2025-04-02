@@ -69,14 +69,30 @@
             text-align: center;
             color: #333;
         }
+
+        .additional-inputs {
+            display: none;
+            margin-top: 10px;
+        }
     </style>
+    <script>
+        function toggleHTTPFields() {
+            var httpSelect = document.getElementById("http_select");
+            var additionalInputs = document.getElementById("additional_inputs");
+            if (httpSelect.value === "yes") {
+                additionalInputs.style.display = "block";
+            } else {
+                additionalInputs.style.display = "none";
+            }
+        }
+    </script>
 </head>
 
 <body>
     <div class="container">
-        <h2>AIR QUALITY Configuration</h2>
+        <h2>ESP32 Configuration</h2>
         <form action="/save" method="post">
-            <label for="ssid">Name Device :</label>
+            <label for="name_device">Name Device :</label>
             <input type="text" name="name_device" id="name_device" required>
 
             <label for="ssid">WiFi SSID:</label>
@@ -90,6 +106,23 @@
 
             <label for="email">Email:</label>
             <input type="email" name="email" id="email" required>
+
+            <label for="http_select">HTTP :</label>
+            <select name="http_select" id="http_select" onchange="toggleHTTPFields()" required>
+                <option value="default">Default</option>
+                <option value="yes">Yes</option>
+            </select>
+
+            <div id="additional_inputs" class="additional-inputs">
+                <label for="webhook">Webhook Endpoint:</label>
+                <input type="text" name="webhook" id="webhook">
+
+                <label for="auth_token">Authorization Token:</label>
+                <input type="text" name="auth_token" id="auth_token">
+
+                <label for="device_id">ID Device:</label>
+                <input type="text" name="device_id" id="device_id">
+            </div>
 
             <input type="submit" value="Save">
         </form>

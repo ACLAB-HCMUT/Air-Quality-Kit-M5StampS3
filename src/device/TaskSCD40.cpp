@@ -1,3 +1,4 @@
+#ifdef M5_CORE2
 #include "TaskSCD40.h"
 
 SensirionI2CScd4x scd4x;
@@ -72,3 +73,4 @@ void SCD40_init()
 {
     xTaskCreate(TaskSCD40, "TaskSCD40", 4096, NULL, 1, NULL);
 }
+#endif

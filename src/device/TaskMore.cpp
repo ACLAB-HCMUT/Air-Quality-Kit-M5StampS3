@@ -66,6 +66,7 @@ void Vibration_sensor()
     vibration_value = float(rawValue) * 5 / 4095;
 }
 
+#ifdef M5_CORE2
 void getBattery()
 {
     esp_adc_cal_characteristics_t adc_chars;
@@ -85,6 +86,7 @@ void getBattery()
     if (battery_value < 0.0)
         battery_value = 0.0;
 }
+#endif
 
 void send_Value()
 {
@@ -114,7 +116,9 @@ void TaskMore(void *pvParameters)
     {
 
         arrange ? Sound_sensor() : Vibration_sensor();
+#ifdef M5_CORE2
         getBattery();
+#endif
         send_Value();
         arrange = !arrange;
         vTaskDelay(delay_time / portTICK_PERIOD_MS);

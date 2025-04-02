@@ -5,5 +5,6 @@
 #include "TaskMQTT.h"
 #include "TaskWifi.h"
 #include "TaskServer.h"
+#include "TaskHTTP.h"
 
 #endif /* INC_CONNECTINIT_H_ */

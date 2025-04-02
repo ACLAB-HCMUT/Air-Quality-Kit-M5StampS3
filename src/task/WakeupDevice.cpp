@@ -1,3 +1,4 @@
+#ifdef M5_CORE2
 #include "WakeupDevice.h"
 #include "driver/rtc_io.h"
 
@@ -93,3 +94,4 @@ void WakeupDevice()
     digitalWrite(POWER_HOLD, HIGH);
     xTaskCreate(TaskWakeupDevice, "TaskWakeupDevice", 4096, NULL, 1, NULL);
 }
+#endif

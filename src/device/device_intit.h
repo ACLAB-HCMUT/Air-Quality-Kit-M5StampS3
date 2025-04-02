@@ -4,6 +4,7 @@
 #include <globals.h>
 #include "Sensor.h"
 #include "TaskMore.h"
+#include "TaskLed.h"
 
 void device_intit();
 

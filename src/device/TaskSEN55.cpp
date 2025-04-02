@@ -1,3 +1,4 @@
+#ifdef M5_CORE2
 #include "TaskSEN55.h"
 
 SensirionI2CSen5x sen5x;
@@ -80,3 +81,4 @@ void SEN55_init()
 {
     xTaskCreate(TaskSEN55, "SEN55", 4096, NULL, 1, NULL);
 }
+#endif

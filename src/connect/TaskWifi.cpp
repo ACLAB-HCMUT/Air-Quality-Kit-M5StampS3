@@ -4,6 +4,7 @@ bool reconnect = false;
 
 void InitWiFi()
 {
+    isServerRunning = false;
     if (WIFI_SSID.isEmpty())
     {
         vTaskDelete(NULL);

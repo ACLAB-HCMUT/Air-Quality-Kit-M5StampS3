@@ -15,8 +15,11 @@
 #include <TinyGPS++.h>
 #include <ThingsBoard.h>
 #include <Arduino_MQTT_Client.h>
-#include "SensirionI2CSen5x.h"
-#include <SensirionI2CScd4x.h>
+#include <HTTPClient.h>
+
+// #ifdef DIS_ROOT
+#include <Adafruit_NeoPixel.h>
+// #endif
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -47,6 +50,8 @@
 #include <M5Unified.h>
 #include <lgfx/v1/panel/Panel_GDEW0154D67.hpp>
 #include <esp_adc_cal.h>
+#include "SensirionI2CSen5x.h"
+#include <SensirionI2CScd4x.h>
 
 // include M5 init
 #include "../src/common/M5_init.h"
