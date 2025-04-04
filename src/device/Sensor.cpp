@@ -110,8 +110,8 @@ void updateView()
         sensor.sen55.massConcentrationPm2p5,
         sensor.sen55.massConcentrationPm4p0,
         sensor.sen55.massConcentrationPm10p0,
-        sensor.sen55.ambientHumidity,
-        sensor.sen55.ambientTemperature,
+        sensor.sen55.Temperature,
+        sensor.sen55.Humidity,
         sensor.sen55.vocIndex,
         sensor.sen55.noxIndex);
     if (WiFi.status() == WL_CONNECTED)
@@ -135,7 +135,7 @@ void updateView()
 #endif
     if (HTTP_SELECT == "yes")
     {
-        StaticJsonDocument<2048> doc;
+        StaticJsonDocument<4096> doc;
 #ifdef IS_ROOT
         doc["temperature"] = sensor.sensor5.Temperature;
         doc["humidity"] = sensor.sensor5.Humidity;
@@ -144,6 +144,7 @@ void updateView()
         doc["light"] = sensor.sensor5.light;
         doc["pm2.5"] = sensor.sensor5.pm2p5;
         doc["pm10"] = sensor.sensor5.pm10;
+        doc["vibration"] = sensor.more_sensor.vibration;
 #else
         doc["temperature"] = sensor.sen55.Temperature;
         doc["humidity"] = sensor.sen55.Humidity;

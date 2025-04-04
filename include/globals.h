@@ -17,9 +17,9 @@
 #include <Arduino_MQTT_Client.h>
 #include <HTTPClient.h>
 
-// #ifdef DIS_ROOT
+#ifdef IS_ROOT
 #include <Adafruit_NeoPixel.h>
-// #endif
+#endif
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"

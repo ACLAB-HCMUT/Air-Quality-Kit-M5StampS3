@@ -1,7 +1,5 @@
 #include "TaskWifi.h"
 
-bool reconnect = false;
-
 void InitWiFi()
 {
     isServerRunning = false;
