@@ -16,6 +16,7 @@
 #include <ThingsBoard.h>
 #include <Arduino_MQTT_Client.h>
 #include <HTTPClient.h>
+#include "ESP_Mail_Client.h"
 
 #ifdef IS_ROOT
 #include <Adafruit_NeoPixel.h>

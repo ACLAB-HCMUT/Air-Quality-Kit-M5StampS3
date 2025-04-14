@@ -6,5 +6,6 @@
 #include "TaskWifi.h"
 #include "TaskServer.h"
 #include "TaskHTTP.h"
+#include "TaskSendMail.h"
 
 #endif /* INC_CONNECTINIT_H_ */

@@ -6,11 +6,19 @@ String NAME_DEVICE;
 String WIFI_SSID;
 String WIFI_PASS;
 String TOKEN;
+String EMAIL;
 String HTTP_SELECT;
 String webhook;
 String auth_token;
 String device_id;
-// String EMAIL;
+String WARNING_VALUE;
+String compare_temp;
+String compare_humi;
+String compare_sound;
+String compare_pressure;
+String compare_light;
+String compare_pm2p5;
+String compare_pm10;
 
 void loadInfoFromFile()
 {
@@ -32,14 +40,52 @@ void loadInfoFromFile()
         WIFI_SSID = strdup(doc["WIFI_SSID"]);
         WIFI_PASS = strdup(doc["WIFI_PASS"]);
         TOKEN = strdup(doc["TOKEN"]);
+        EMAIL = strdup(doc["EMAIL"]);
         HTTP_SELECT = strdup(doc["HTTP_SELECT"]);
+        WARNING_VALUE = strdup(doc["WARNING_VALUE"]);
         if (HTTP_SELECT == "yes")
         {
             webhook = strdup(doc["webhook"]);
             auth_token = strdup(doc["auth_token"]);
             device_id = strdup(doc["device_id"]);
         }
-        // EMAIL = strdup(doc["EMAIL"]);
+        if (WARNING_VALUE == "yes")
+        {
+            if (doc.containsKey("compare_temp"))
+            {
+                compare_temp = strdup(doc["compare_temp"]);
+            }
+
+            if (doc.containsKey("compare_humi"))
+            {
+                compare_humi = strdup(doc["compare_humi"]);
+            }
+
+            if (doc.containsKey("compare_sound"))
+            {
+                compare_sound = strdup(doc["compare_sound"]);
+            }
+
+            if (doc.containsKey("compare_pressure"))
+            {
+                compare_pressure = strdup(doc["compare_pressure"]);
+            }
+
+            if (doc.containsKey("compare_light"))
+            {
+                compare_light = strdup(doc["compare_light"]);
+            }
+
+            if (doc.containsKey("compare_pm2p5"))
+            {
+                compare_pm2p5 = strdup(doc["compare_pm2p5"]);
+            }
+
+            if (doc.containsKey("compare_pm10"))
+            {
+                compare_pm10 = strdup(doc["compare_pm10"]);
+            }
+        }
     }
     file.close();
 }
@@ -129,6 +175,22 @@ const char index_html[] PROGMEM = R"rawliteral(
             display: none;
             margin-top: 10px;
         }
+
+        hr {
+            border: 0;
+            border-top: 3px solid #333;
+            margin: 20px 0;
+        }
+
+        select {
+            text-align: left;
+            /* Đặt text align cho toàn bộ select là trái */
+        }
+
+        select option {
+            text-align: center;
+            /* Căn giữa cho mỗi option trong select */
+        }
     </style>
     <script>
         function toggleHTTPFields() {
@@ -138,6 +200,16 @@ const char index_html[] PROGMEM = R"rawliteral(
                 additionalInputs.style.display = "block";
             } else {
                 additionalInputs.style.display = "none";
+            }
+        }
+
+        function toggleWarningFields() {
+            var warningSelect = document.getElementById("warning_select");
+            var warningInputs = document.getElementById("warning_inputs");
+            if (warningSelect.value === "yes") {
+                warningInputs.style.display = "block";
+            } else {
+                warningInputs.style.display = "none";
             }
         }
     </script>
@@ -159,6 +231,11 @@ const char index_html[] PROGMEM = R"rawliteral(
             <label for="token">MQTT Token:</label>
             <input type="text" name="token" id="token" required>
 
+             <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+
+            <hr>
+
             <label for="http_select">HTTP :</label>
             <select name="http_select" id="http_select" onchange="toggleHTTPFields()" required>
                 <option value="default">Default</option>
@@ -168,15 +245,121 @@ const char index_html[] PROGMEM = R"rawliteral(
 
             <div id="additional_inputs" class="additional-inputs">
                 <label for="webhook">Webhook Endpoint:</label>
-                <input type="text" name="webhook" id="webhook" >
+                <input type="text" name="webhook" id="webhook">
 
                 <label for="auth_token">Authorization Token:</label>
-                <input type="text" name="auth_token" id="auth_token" >
+                <input type="text" name="auth_token" id="auth_token">
 
                 <label for="device_id">ID Device:</label>
-                <input type="text" name="device_id" id="device_id" >
+                <input type="text" name="device_id" id="device_id">
             </div>
 
+            <hr>
+            <label for="warning_select">Value warning :</label>
+            <select name="warning_select" id="warning_select" onchange="toggleWarningFields()" required>
+                <option value="default">Default</option>
+                <option value="yes">Yes</option>
+            </select>
+
+            <div id="warning_inputs" class="additional-inputs">
+                <!-- Temperature Section -->
+                <label for="temperature">Temperature:</label>
+                <div style="display: flex; justify-content: space-between;">
+                    <select name="comparison_operator_temperature" id="comparison_operator_temperature"
+                        style="width: 48%;">
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="=">=</option>
+                        <option value="<=">&lt;=</option>
+                        <option value=">=">&gt;=</option>
+                    </select>
+                    <input type="text" name="temperature_value" id="temperature_value" style="width: 48%;"
+                        placeholder="Enter value">
+                </div>
+
+                <!-- Humidity Section -->
+                <label for="humidity">Humidity:</label>
+                <div style="display: flex; justify-content: space-between;">
+                    <select name="comparison_operator_humidity" id="comparison_operator_humidity" style="width: 48%;">
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="=">=</option>
+                        <option value="<=">&lt;=</option>
+                        <option value=">=">&gt;=</option>
+                    </select>
+                    <input type="text" name="humidity_value" id="humidity_value" style="width: 48%;"
+                        placeholder="Enter value">
+                </div>
+
+                <!-- Sound Section -->
+                <label for="sound">Sound:</label>
+                <div style="display: flex; justify-content: space-between;">
+                    <select name="comparison_operator_sound" id="comparison_operator_sound" style="width: 48%;">
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="=">=</option>
+                        <option value="<=">&lt;=</option>
+                        <option value=">=">&gt;=</option>
+                    </select>
+                    <input type="text" name="sound_value" id="sound_value" style="width: 48%;"
+                        placeholder="Enter value">
+                </div>
+
+                <!-- Pressure Section -->
+                <label for="pressure">Pressure:</label>
+                <div style="display: flex; justify-content: space-between;">
+                    <select name="comparison_operator_pressure" id="comparison_operator_pressure" style="width: 48%;">
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="=">=</option>
+                        <option value="<=">&lt;=</option>
+                        <option value=">=">&gt;=</option>
+                    </select>
+                    <input type="text" name="pressure_value" id="pressure_value" style="width: 48%;"
+                        placeholder="Enter value">
+                </div>
+
+                <!-- Light Section -->
+                <label for="light">Light:</label>
+                <div style="display: flex; justify-content: space-between;">
+                    <select name="comparison_operator_light" id="comparison_operator_light" style="width: 48%;">
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="=">=</option>
+                        <option value="<=">&lt;=</option>
+                        <option value=">=">&gt;=</option>
+                    </select>
+                    <input type="text" name="light_value" id="light_value" style="width: 48%;"
+                        placeholder="Enter value">
+                </div>
+
+                <!-- PM2.5 Section -->
+                <label for="pm2p5">PM2.5:</label>
+                <div style="display: flex; justify-content: space-between;">
+                    <select name="comparison_operator_pm2p5" id="comparison_operator_pm2p5" style="width: 48%;">
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="=">=</option>
+                        <option value="<=">&lt;=</option>
+                        <option value=">=">&gt;=</option>
+                    </select>
+                    <input type="text" name="pm2p5_value" id="pm2p5_value" style="width: 48%;"
+                        placeholder="Enter value">
+                </div>
+
+                <!-- PM10 Section -->
+                <label for="pm10">PM10:</label>
+                <div style="display: flex; justify-content: space-between;">
+                    <select name="comparison_operator_pm10" id="comparison_operator_pm10" style="width: 48%;">
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="=">=</option>
+                        <option value="<=">&lt;=</option>
+                        <option value=">=">&gt;=</option>
+                    </select>
+                    <input type="text" name="pm10_value" id="pm10_value" style="width: 48%;" placeholder="Enter value">
+                </div>
+            </div>
             <input type="submit" value="Save">
         </form>
     </div>
@@ -209,7 +392,10 @@ NAME_DEVICE = request->getParam("name_device", true)->value();
 WIFI_SSID = request->getParam("ssid", true)->value();
 WIFI_PASS = request->getParam("pass", true)->value();
 TOKEN = request->getParam("token", true)->value();
+EMAIL = request->getParam("email", true)->value();
 HTTP_SELECT = request->getParam("http_select", true)->value();
+WARNING_VALUE = request->getParam("warning_select", true)->value();
+
 if (HTTP_SELECT == "yes")
 {
     webhook = request->getParam("webhook", true)->value();
@@ -217,19 +403,98 @@ if (HTTP_SELECT == "yes")
     device_id = request->getParam("device_id", true)->value();
 }
 
-// EMAIL = request->getParam("email", true)->value();
+if (WARNING_VALUE == "yes")
+{
+    if (request->hasParam("comparison_operator_temperature", true) && request->hasParam("temperature_value", true)) {
+        String comparison_operator_temp = request->getParam("comparison_operator_temperature", true)->value();
+        String temperature_value = request->getParam("temperature_value", true)->value();
+        compare_temp = comparison_operator_temp + temperature_value;
+    }
+    
+    if (request->hasParam("comparison_operator_humidity", true) && request->hasParam("humidity_value", true)) {
+        String comparison_operator_humi = request->getParam("comparison_operator_humidity", true)->value();
+        String humidity_value = request->getParam("humidity_value", true)->value();
+        compare_humi = comparison_operator_humi + humidity_value;
+    }
+    
+    if (request->hasParam("comparison_operator_sound", true) && request->hasParam("sound_value", true)) {
+        String comparison_operator_sound = request->getParam("comparison_operator_sound", true)->value();
+        String sound_value = request->getParam("sound_value", true)->value();
+        compare_sound = comparison_operator_sound + sound_value;
+    }
+    
+    if (request->hasParam("comparison_operator_pressure", true) && request->hasParam("pressure_value", true)) {
+        String comparison_operator_pressure = request->getParam("comparison_operator_pressure", true)->value();
+        String pressure_value = request->getParam("pressure_value", true)->value();
+        compare_pressure = comparison_operator_pressure + pressure_value;
+    }
+    
+    if (request->hasParam("comparison_operator_light", true) && request->hasParam("light_value", true)) {
+        String comparison_operator_light = request->getParam("comparison_operator_light", true)->value();
+        String light_value = request->getParam("light_value", true)->value();
+        compare_light = comparison_operator_light + light_value;
+    }
+    
+    if (request->hasParam("comparison_operator_pm2p5", true) && request->hasParam("pm2p5_value", true)) {
+        String comparison_operator_pm2p5 = request->getParam("comparison_operator_pm2p5", true)->value();
+        String pm2p5_value = request->getParam("pm2p5_value", true)->value();
+        compare_pm2p5 = comparison_operator_pm2p5 + pm2p5_value;
+    }
+    
+    if (request->hasParam("comparison_operator_pm10", true) && request->hasParam("pm10_value", true)) {
+        String comparison_operator_pm10 = request->getParam("comparison_operator_pm10", true)->value();
+        String pm10_value = request->getParam("pm10_value", true)->value();
+        compare_pm10 = comparison_operator_pm10 + pm10_value;
+    }
+}
+
+
 
 DynamicJsonDocument doc(2048);
 doc["NAME_DEVICE"] = NAME_DEVICE;
 doc["WIFI_SSID"] = WIFI_SSID;
 doc["WIFI_PASS"] = WIFI_PASS;
 doc["TOKEN"] = TOKEN;
+doc["EMAIL"] = EMAIL;
 doc["HTTP_SELECT"]=HTTP_SELECT;
+doc["WARNING_VALUE"]=WARNING_VALUE;
+
 if(HTTP_SELECT == "yes")
 {
     doc["webhook"] = webhook;
     doc["auth_token"] = auth_token;
     doc["device_id"] = device_id;
+}
+
+if(WARNING_VALUE == "yes")
+{
+    if (!compare_temp.isEmpty()) {
+        doc["compare_temp"] = compare_temp;
+    }
+    
+    if (!compare_humi.isEmpty()) {
+        doc["compare_humi"] = compare_humi;
+    }
+    
+    if (!compare_sound.isEmpty()) {
+        doc["compare_sound"] = compare_sound;
+    }
+    
+    if (!compare_pressure.isEmpty()) {
+        doc["compare_pressure"] = compare_pressure;
+    }
+    
+    if (!compare_light.isEmpty()) {
+        doc["compare_light"] = compare_light;
+    }
+    
+    if (!compare_pm2p5.isEmpty()) {
+        doc["compare_pm2p5"] = compare_pm2p5;
+    }
+    
+    if (!compare_pm10.isEmpty()) {
+        doc["compare_pm10"] = compare_pm10;
+    }    
 }
 
 File configFile = LittleFS.open("/info.dat", "w");

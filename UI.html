@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -74,6 +73,22 @@
             display: none;
             margin-top: 10px;
         }
+
+        hr {
+            border: 0;
+            border-top: 3px solid #333;
+            margin: 20px 0;
+        }
+
+        select {
+            text-align: left;
+            /* Đặt text align cho toàn bộ select là trái */
+        }
+
+        select option {
+            text-align: center;
+            /* Căn giữa cho mỗi option trong select */
+        }
     </style>
     <script>
         function toggleHTTPFields() {
@@ -83,6 +98,16 @@
                 additionalInputs.style.display = "block";
             } else {
                 additionalInputs.style.display = "none";
+            }
+        }
+
+        function toggleWarningFields() {
+            var warningSelect = document.getElementById("warning_select");
+            var warningInputs = document.getElementById("warning_inputs");
+            if (warningSelect.value === "yes") {
+                warningInputs.style.display = "block";
+            } else {
+                warningInputs.style.display = "none";
             }
         }
     </script>
@@ -104,6 +129,11 @@
             <label for="token">MQTT Token:</label>
             <input type="text" name="token" id="token" required>
 
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+
+            <hr>
+
             <label for="http_select">HTTP :</label>
             <select name="http_select" id="http_select" onchange="toggleHTTPFields()" required>
                 <option value="default">Default</option>
@@ -122,6 +152,112 @@
                 <input type="text" name="device_id" id="device_id">
             </div>
 
+            <hr>
+            <label for="warning_select">Value warning :</label>
+            <select name="warning_select" id="warning_select" onchange="toggleWarningFields()" required>
+                <option value="default">Default</option>
+                <option value="yes">Yes</option>
+            </select>
+
+            <div id="warning_inputs" class="additional-inputs">
+                <!-- Temperature Section -->
+                <label for="temperature">Temperature:</label>
+                <div style="display: flex; justify-content: space-between;">
+                    <select name="comparison_operator_temperature" id="comparison_operator_temperature"
+                        style="width: 48%;">
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="=">=</option>
+                        <option value="<=">&lt;=</option>
+                        <option value=">=">&gt;=</option>
+                    </select>
+                    <input type="text" name="temperature_value" id="temperature_value" style="width: 48%;"
+                        placeholder="Enter value">
+                </div>
+
+                <!-- Humidity Section -->
+                <label for="humidity">Humidity:</label>
+                <div style="display: flex; justify-content: space-between;">
+                    <select name="comparison_operator_humidity" id="comparison_operator_humidity" style="width: 48%;">
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="=">=</option>
+                        <option value="<=">&lt;=</option>
+                        <option value=">=">&gt;=</option>
+                    </select>
+                    <input type="text" name="humidity_value" id="humidity_value" style="width: 48%;"
+                        placeholder="Enter value">
+                </div>
+
+                <!-- Sound Section -->
+                <label for="sound">Sound:</label>
+                <div style="display: flex; justify-content: space-between;">
+                    <select name="comparison_operator_sound" id="comparison_operator_sound" style="width: 48%;">
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="=">=</option>
+                        <option value="<=">&lt;=</option>
+                        <option value=">=">&gt;=</option>
+                    </select>
+                    <input type="text" name="sound_value" id="sound_value" style="width: 48%;"
+                        placeholder="Enter value">
+                </div>
+
+                <!-- Pressure Section -->
+                <label for="pressure">Pressure:</label>
+                <div style="display: flex; justify-content: space-between;">
+                    <select name="comparison_operator_pressure" id="comparison_operator_pressure" style="width: 48%;">
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="=">=</option>
+                        <option value="<=">&lt;=</option>
+                        <option value=">=">&gt;=</option>
+                    </select>
+                    <input type="text" name="pressure_value" id="pressure_value" style="width: 48%;"
+                        placeholder="Enter value">
+                </div>
+
+                <!-- Light Section -->
+                <label for="light">Light:</label>
+                <div style="display: flex; justify-content: space-between;">
+                    <select name="comparison_operator_light" id="comparison_operator_light" style="width: 48%;">
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="=">=</option>
+                        <option value="<=">&lt;=</option>
+                        <option value=">=">&gt;=</option>
+                    </select>
+                    <input type="text" name="light_value" id="light_value" style="width: 48%;"
+                        placeholder="Enter value">
+                </div>
+
+                <!-- PM2.5 Section -->
+                <label for="pm2p5">PM2.5:</label>
+                <div style="display: flex; justify-content: space-between;">
+                    <select name="comparison_operator_pm2p5" id="comparison_operator_pm2p5" style="width: 48%;">
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="=">=</option>
+                        <option value="<=">&lt;=</option>
+                        <option value=">=">&gt;=</option>
+                    </select>
+                    <input type="text" name="pm2p5_value" id="pm2p5_value" style="width: 48%;"
+                        placeholder="Enter value">
+                </div>
+
+                <!-- PM10 Section -->
+                <label for="pm10">PM10:</label>
+                <div style="display: flex; justify-content: space-between;">
+                    <select name="comparison_operator_pm10" id="comparison_operator_pm10" style="width: 48%;">
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                        <option value="=">=</option>
+                        <option value="<=">&lt;=</option>
+                        <option value=">=">&gt;=</option>
+                    </select>
+                    <input type="text" name="pm10_value" id="pm10_value" style="width: 48%;" placeholder="Enter value">
+                </div>
+            </div>
             <input type="submit" value="Save">
         </form>
     </div>
